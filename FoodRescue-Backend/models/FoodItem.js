@@ -12,5 +12,4 @@ const FoodItemSchema = new mongoose.Schema({
   isAvailable: { type: Boolean, default: true }
 }, { timestamps: true });
 
-// 👇 THIS LINE IS THE KEY
 module.exports = mongoose.model('FoodItem', FoodItemSchema);

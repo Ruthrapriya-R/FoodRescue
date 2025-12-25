@@ -3,13 +3,11 @@ import React, { useState, useEffect } from 'react';
 function App() {
   const [foodList, setFoodList] = useState([]);
   const [token, setToken] = useState(null);
-  const [user, setUser] = useState(null); // Stores ID, Name, Role
+  const [user, setUser] = useState(null); 
 
-  // Login States
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Vendor Form States
   const [newItem, setNewItem] = useState({
     name: "", description: "", originalPrice: "", discountedPrice: "", quantity: "", category: "Bakery", expiryTime: ""
   });
@@ -25,7 +23,6 @@ function App() {
     if (token) fetchFood();
   }, [token]);
 
-  // --- ACTIONS ---
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -38,13 +35,13 @@ function App() {
       const data = await response.json();
       if (response.ok) {
         setToken(data.token);
-        setUser(data.user); // Now contains _id and role!
+        setUser(data.user); 
         alert(`✅ Welcome ${data.user.name} (${data.user.role})`);
       } else {
         alert("❌ " + data.message);
       }
     } catch (error) {
-  console.log(error); // <--- Now we are using it!
+  console.log(error); 
   alert("Something went wrong!");
 }
   };
@@ -62,7 +59,7 @@ function App() {
         fetchFood();
       } else { alert("❌ " + data.message); }
     } catch (error) {
-  console.log(error); // <--- Now we are using it!
+  console.log(error); 
   alert("Something went wrong!");
 }
   };
@@ -74,24 +71,22 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          vendorId: user._id, // Uses the logged-in user's ID
+          vendorId: user._id, 
           ...newItem
         })
       });
       if (response.ok) {
         alert("✅ Food Posted Successfully!");
-        setNewItem({ name: "", description: "", originalPrice: "", discountedPrice: "", quantity: "", category: "Bakery", expiryTime: "" }); // Clear form
-        fetchFood(); // Refresh grid
+        setNewItem({ name: "", description: "", originalPrice: "", discountedPrice: "", quantity: "", category: "Bakery", expiryTime: "" }); 
+        fetchFood(); 
       } else {
         alert("Failed to post food");
       }
     } catch (error) {
-  console.log(error); // <--- Now we are using it!
+  console.log(error); 
   alert("Something went wrong!");
 }
   };
-
-  // --- RENDER ---
 
   if (!token) {
     return (
@@ -119,7 +114,6 @@ function App() {
       </nav>
 
       <div className="container">
-        {/* VENDOR DASHBOARD: Only show if role is 'vendor' */}
         {user.role === 'vendor' && (
           <div style={{ background: "white", padding: "20px", borderRadius: "10px", marginBottom: "30px", borderLeft: "5px solid #ff5722", boxShadow: "0 5px 15px rgba(0,0,0,0.05)" }}>
             <h2 style={{ marginBottom: "15px", color: "#d84315" }}>📤 Post New Food</h2>
@@ -153,7 +147,6 @@ function App() {
                 <div className="stock-badge">⚡ {food.quantity} left</div>
               </div>
               
-              {/* VENDOR SEES 'EDIT' (Fake button for now), STUDENT SEES 'BUY' */}
               <div className="card-footer">
                 {user.role === 'student' ? (
                    food.quantity > 0 ? 
